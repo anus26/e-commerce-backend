@@ -1,13 +1,18 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import mongoose from 'mongoose'
 import express from 'express'
 import connectDB from './src/Config/db.js'
-const app = express()
+import cors from 'cors'
+import router from './src/routes/User.routes.js'
 
+const app = express()
+app.use(express.json())
+app.use(cors())
 connectDB()
+
+app.use('/api/v1/user',router)
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello karachi!')
 })
 
 app.listen(process.env.PORT, () => {
