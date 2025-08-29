@@ -1,5 +1,6 @@
+import createTokensaveCookie from "../../jwt/genreatetoken.js";
 import User from "../modles/User.models.js"
-
+import bcrypt  from "bcryptjs";
 const signup=async(req,res)=>{
     const {fullname,email,password,confirmpassword}=req.body
    try {
@@ -11,14 +12,24 @@ const signup=async(req,res)=>{
     if (users) {
         return  res.status(400).json({error:"email already exist"})
     }
-    // const hashpassword=await bcrypt.hash(password,10)
+    const hashpassword=await bcrypt.hash(password,10)
     const user=new User({
           fullname,
           email,
-          password,
+          password:hashpassword,
           confirmpassword
     })
      await user.save()
+      if (user) {
+        createTokensaveCookie(res,user._id)
+          res.status(201).json({message:"user singnup successfully",user:{
+              _id:user._id,
+            fullname:user.fullname,
+            email:user.email
+          }})
+      }
+        
+    
    
    } catch (error) {
      console.log(error);
@@ -37,12 +48,18 @@ const signin=async(req,res)=>{
             return res.status(400).json({error:"user not match"})
             
         }
-     if (user.password!==password) {
-return res.status(400).json({error:"password are not match"})
+        const isMatch=await  bcrypt.compare(password,user.password)
+     if (!user || isMatch) {
+return res.status(400).json({error:"invalid email or password"})
         
      }
+     createTokensaveCookie(res,user.id)
 
-        return res.status(200).json({user})
+      res.status(200).json({message:"user login successfully",user:{
+    _id:user._id,
+fullname:user.fullname,
+email:user.email
+}})
     } catch (error) {
          console.log(error);
         res.status(500).json({error:"internal server error"})
@@ -52,9 +69,9 @@ return res.status(400).json({error:"password are not match"})
 
 const logout=async(req,res)=>{
     try {
-        const {email}=req.body
-        const user=await User.findOneAndDelete({email})
-        return res.status(200).json({user})
+         res.clearCookie("jwt")
+
+        return res.status(200).json({message:"clear cookies successfully"})
     } catch (error) {
              console.log(error);
         res.status(500).json({error:"internal server error"})
