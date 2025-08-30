@@ -1,5 +1,5 @@
 import createTokensaveCookie from "../../jwt/genreatetoken.js";
-import User from "../modles/User.models.js"
+import User from "../models/User.models.js"
 import bcrypt  from "bcryptjs";
 const signup=async(req,res)=>{
     const {fullname,email,password,confirmpassword}=req.body
@@ -17,7 +17,7 @@ const signup=async(req,res)=>{
           fullname,
           email,
           password:hashpassword,
-          confirmpassword
+      
     })
      await user.save()
       if (user) {
@@ -93,5 +93,17 @@ const alluserid=async(req,res)=>{
     }
 }
 
-export {signup,signin,logout,alluserid}
+const alluser=async(req,res)=>{
+    try {
+       const loggedInuser=req.user._id
+       const user=await User.find({_id:{$ne:loggedInuser},}).select(
+        "-password"
+           ) 
+       return res.status(200).json(user)
+    } catch (error) {
+         console.log("Error ", error);
+    }
+}
+
+export {signup,signin,logout,alluserid,alluser}
 
