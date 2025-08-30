@@ -1,6 +1,6 @@
-import User from "../modles/User.models";
+import User from "../models/User.models.js";
 import  jwt from 'jsonwebtoken'
-const authmiddleware=async(req,res)=>{
+const authmiddleware=async(req,res,next)=>{
     const token =req.cookies.jwt
     if (!token) {
           return res.status(401).json({ error: "Unauthorized: No token provided" });
