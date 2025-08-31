@@ -1,6 +1,9 @@
 import createTokensaveCookie from "../../jwt/genreatetoken.js";
 import User from "../models/User.models.js"
 import bcrypt  from "bcryptjs";
+import { sendMail } from "../Utils/sendMail.js";
+
+
 const signup=async(req,res)=>{
     const {fullname,email,password,confirmpassword}=req.body
    try {
@@ -105,5 +108,23 @@ const alluser=async(req,res)=>{
     }
 }
 
-export {signup,signin,logout,alluserid,alluser}
+
+ const sendMailcon = async (req, res) => {
+  try {
+    const { to, subject, text } = req.body;
+
+    if (!to || !subject || !text) {
+      return res.status(400).json({ error: "Please provide to, subject, and text" });
+    }
+
+    await sendMail(to, subject, text);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+export {signup,signin,logout,alluserid,alluser,sendMailcon}
 
