@@ -1,8 +1,8 @@
 import createTokensaveCookie from "../../jwt/genreatetoken.js";
 import User from "../models/User.models.js"
-import bcrypt  from "bcryptjs";
+import bcrypt, { hash }  from "bcryptjs";
 import { sendMail } from "../Utils/sendMail.js";
-
+import crypto from "crypto";
 
 const signup=async(req,res)=>{
     const {fullname,email,password,confirmpassword}=req.body
@@ -124,7 +124,60 @@ const alluser=async(req,res)=>{
     res.status(500).json({ error: "Internal server error" });
   }
 };
+const forgetpassword=async(req,res)=>{
+    const {email}=req.body
+    const user=await User.findOne({email})
+    if (!user) {
+        return res.status(400).json({messages:"email not found"})
+    }
+    const resetToken=crypto.randomBytes(32).toString("hex")
+    const hashToken=crypto.createHash("sha256").update(resetToken).digest("hex")
+    
+    user.resetPasswordToken=hashToken
+    user.resetPasswordExpire=Date.now()+15*60*1000
+    await user.save()
+const resetUrl = `http://localhost:5000/api/user/reset-password/${resetToken}`;
+
+        // 5. Send email with reset link
+    const subject = "Password Reset Request";
+    const text = `You requested a password reset. Click the link below to reset your password:\n\n${resetUrl}\n\nIf you did not request this, please ignore.`;
+
+  await sendMail(user.email,subject,text)
+  return res.status(200).json({messages:"Password reset email sent successfully"})
+
+}
 
 
-export {signup,signin,logout,alluserid,alluser,sendMailcon}
+
+const resetpassword=async(req,res)=>{
+    try {
+        const {token}=req.params
+        const {password}=req.body
+         const hashToken = crypto.createHash("sha256").update(token).digest("hex")
+         const user=await User.findOne({
+            resetPasswordToken:hashToken,
+          resetPasswordExpire: { $gt: Date.now() },
+            
+        })
+        
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Save new password (make sure to hash with bcrypt in your schema pre-save hook)
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful" });
+    } catch (error) {
+         console.error("Reset Password Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+export {signup,signin,logout,alluserid,alluser,sendMailcon,forgetpassword,resetpassword}
 
