@@ -16,7 +16,8 @@ const userSchema=new mongoose.Schema({
         required:true
     },
 
-
+  resetPasswordToken: String,
+  resetPasswordExpire: Date
 },{timestamps:true})
 const User  =mongoose.model("user",userSchema)
 export default User
