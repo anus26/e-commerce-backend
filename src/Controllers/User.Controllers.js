@@ -130,17 +130,21 @@ const forgetpassword=async(req,res)=>{
     if (!user) {
         return res.status(400).json({messages:"email not found"})
     }
-    const resetToken=crypto.randomBytes(32).toString("hex")
-    const hashToken=crypto.createHash("sha256").update(resetToken).digest("hex")
+    // const resetToken=crypto.randomBytes(32).toString("hex")
+//     const hashToken=crypto.createHash("sha256").update(resetToken).digest("hex")
     
-    user.resetPasswordToken=hashToken
-    user.resetPasswordExpire=Date.now()+15*60*1000
-    await user.save()
-const resetUrl = `http://localhost:5000/api/user/reset-password/${resetToken}`;
+//     user.resetPasswordToken=hashToken
+//     user.resetPasswordExpire=Date.now()+15*60*1000
+//     await user.save()
+// const resetUrl = `http://localhost:5000/api/v1/user/reset-password/${resetToken}`;
+const otp=generateOTP()
+user.otp=otp
+user.otpExpire=Date.now()+5*60*1000
+await user.save()
 
         // 5. Send email with reset link
-    const subject = "Password Reset Request";
-    const text = `You requested a password reset. Click the link below to reset your password:\n\n${resetUrl}\n\nIf you did not request this, please ignore.`;
+    const subject = "Password Reset OTP";
+  const   text= `Your OTP is ${otp}. It will expire in 5 minutes.`
 
   await sendMail(user.email,subject,text)
   return res.status(200).json({messages:"Password reset email sent successfully"})
@@ -179,5 +183,36 @@ const resetpassword=async(req,res)=>{
 }
 
 
-export {signup,signin,logout,alluserid,alluser,sendMailcon,forgetpassword,resetpassword}
+const verification=async(req,res)=>{
+    const {email,otp}=req.body
+    const user=await User.findOne({email
+   })
+    if (!user) return res.status(400).json({messages:"user not exicts"})
+        
+    if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+    if (user.otpExpire<Date.now()) return res.status(400).json({messages:"OTP Expired"})
+      return res.status(200).json({ message: "OTP verified successfully" });        
+    
+}
+
+const resetpass=async(req,res)=>{
+    const {email,otp,newpassword}=req.body
+       const user=await User.findOne({email})
+    if (!user) return res.status(400).json({messages:"user not exicts"})
+           if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+    if (user.otpExpire < Date.now()) return res.status(400).json({ message: "OTP expired" });
+    const hashpassword=await bcrypt.hash(newpassword,10)
+  user.password = hashpassword;
+
+    user.otp=null
+    user.otpExpire=null
+    await user.save()
+ 
+    return res.status(200).json({ message: "Password reset successful ✅" ,newpassword:hashpassword,email});
+
+}
+
+const generateOTP=()=>Math.floor(100000 + Math.random()*900000)
+
+export {signup,signin,logout,alluserid,alluser,sendMailcon,forgetpassword,resetpassword,verification,resetpass}
 

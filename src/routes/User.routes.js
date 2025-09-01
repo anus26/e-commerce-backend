@@ -1,5 +1,5 @@
 import express from "express"
-import { alluser, alluserid, forgetpassword, logout, resetpassword, sendMailcon, signin, signup } from "../Controllers/User.Controllers.js"
+import { alluser, alluserid, forgetpassword, logout, resetpass, resetpassword, sendMailcon, signin, signup, verification } from "../Controllers/User.Controllers.js"
 import authmiddleware from "../middleware/User.middleware.js"
 const router=express.Router()
 
@@ -11,5 +11,7 @@ router.get('/alluser',authmiddleware,alluser)
 router.post('/sendmail',sendMailcon)
 router.post('/forget',forgetpassword)
 router.post('/reset-password/:token', resetpassword);
+router.post('/verif',verification)
+router.post('/reset',resetpass)
 
 export default  router
