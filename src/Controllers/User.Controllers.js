@@ -139,7 +139,10 @@ const forgetpassword=async(req,res)=>{
 // const resetUrl = `http://localhost:5000/api/v1/user/reset-password/${resetToken}`;
 const otp=generateOTP()
 user.otp=otp
+
 user.otpExpire=Date.now()+5*60*1000
+
+
 await user.save()
 
         // 5. Send email with reset link
@@ -185,12 +188,13 @@ const resetpassword=async(req,res)=>{
 
 const verification=async(req,res)=>{
     const {email,otp}=req.body
-    const user=await User.findOne({email
-   })
+    const user=await User.findOne({email })
     if (!user) return res.status(400).json({messages:"user not exicts"})
         
     if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
     if (user.otpExpire<Date.now()) return res.status(400).json({messages:"OTP Expired"})
+      
+
       return res.status(200).json({ message: "OTP verified successfully" });        
     
 }
@@ -211,8 +215,13 @@ const resetpass=async(req,res)=>{
     return res.status(200).json({ message: "Password reset successful ✅" ,newpassword:hashpassword,email});
 
 }
+const resendOtp=async(req,res)=>{
+  
+  await  sendMail(User.email,subject,text)
+  return res.status(200).json({message:"New Otp Send Successfully"})
+}
 
 const generateOTP=()=>Math.floor(100000 + Math.random()*900000)
 
-export {signup,signin,logout,alluserid,alluser,sendMailcon,forgetpassword,resetpassword,verification,resetpass}
+export {signup,signin,logout,alluserid,alluser,sendMailcon,forgetpassword,resetpassword,verification,resetpass,resendOtp}
 
