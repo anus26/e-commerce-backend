@@ -5,6 +5,8 @@ import connectDB from './src/Config/db.js'
 import cors from 'cors'
 import router from './src/routes/User.routes.js'
 import cookieParser from 'cookie-parser'
+import coustrouter from './src/routes/Coustmer.routes.js'
+import monthrouter from './src/routes/Monthly.routes.js'
 
 
 
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // transporter()
 app.use('/api/v1/user',router)
+app.use('/api/v1/coust',coustrouter)
+app.use('/api/v1',monthrouter)
 app.get('/', (req, res) => {
   res.send('Hello karachi!')
 })
