@@ -1,11 +1,11 @@
 import Monthlymodel from "../models/Monthly.models.js"
 
 const monthData=async(req,res)=>{
-    const {Coustmer,month,sale}=req.body
+    const {month,sale,Revenu}=req.body
     try {
-        if (!Coustmer ||!month || !sale) return res.stauts(400).json({message:"All field are required"})
+        if (!month || !sale ||  !Revenu) return res.status(400).json({message:"All field are required"})
             const newmonth=new Monthlymodel({
-        Coustmer,
+       Revenu,
         month,
         sale
             })
@@ -18,4 +18,16 @@ const monthData=async(req,res)=>{
     }
 }
 
-export {monthData}
+const getmonth=async(req,res)=>{
+    const {data}=req.params
+    try {
+        const months=await Monthlymodel.find({data})
+        return res.status(200).json({message:"get month data",months})
+    } catch (error) {
+        console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+        
+    }
+}
+
+export {monthData,getmonth}
