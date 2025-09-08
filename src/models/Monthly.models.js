@@ -13,7 +13,7 @@ const monthly=new mongoose.Schema({
         required:true
     },
     Revenu:{
-        type:String,
+        type:Number,
         required:true
     },
     sale:{

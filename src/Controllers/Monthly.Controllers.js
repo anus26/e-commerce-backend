@@ -19,9 +19,9 @@ const monthData=async(req,res)=>{
 }
 
 const getmonth=async(req,res)=>{
-    const {data}=req.params
+
     try {
-        const months=await Monthlymodel.find({data})
+        const months=await Monthlymodel.find()
         return res.status(200).json({message:"get month data",months})
     } catch (error) {
         console.error("error",error.message);
