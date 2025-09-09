@@ -30,4 +30,20 @@ const getmonth=async(req,res)=>{
     }
 }
 
-export {monthData,getmonth}
+const onemonth=async(req,res)=>{
+    
+    try {
+        const {month}=req.params
+        if (!month) return res.status(400).json({message:" month is required"})
+            const months=await Monthlymodel.find({month})
+            
+            
+        
+        res.status(200).json({message:"get one month",months})
+    } catch (error) {
+            console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
+export {monthData,getmonth,onemonth}
