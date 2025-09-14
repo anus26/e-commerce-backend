@@ -53,10 +53,10 @@ const productSchema=new mongoose.Schema({
             type:String,
             required:true
         },
-        images:{
-            type:Image,
-            required:true
-        }
+        // images:{
+        //     type:Image,
+        //     required:true
+        // }
 },{timestamps:true})
 const Product=mongoose.model("product",productSchema)
 export default Product
