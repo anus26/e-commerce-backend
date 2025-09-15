@@ -49,4 +49,67 @@ const productadd=async(req,res)=>{
     
 }
 }
-export {productadd}
+
+
+const product=async(req,res)=>{
+    try {
+     
+        const product=await Product.find()
+        return res.status(200).json({message:"get all data",product})
+    } catch (error) {
+         console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
+const oneproduct=async(req,res)=>{
+    try {
+        const {_id}=req.params
+         if (!_id) return res.status(400).json({message:" product Id is required"})
+            const product=await Product.findById({_id})
+         if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+        return res.status(200).json({message:"get one product succuessfully",product})
+    } catch (error) {
+         console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
+const deleteproduct=async(req,res)=>{
+    try {
+        const {_id}=req.params
+           if (!_id) return res.status(400).json({message:" product Id is required"})
+            const product=await Product.findByIdAndDelete({_id})
+              if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+      return res.status(200).json({message:"get one product Delete",product})
+    } catch (error) {
+               console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
+const updateproduct=async(req,res)=>{
+    try {
+        const {_id}=req.params
+        const data=req.body
+           if (!_id) return res.status(400).json({message:" product Id is required"})
+            const product=await Product.findByIdAndUpdate(_id,data,{
+        new:true,
+        runValidators:true
+        
+    })
+                      if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+      return res.status(200).json({message:"get one product Delete",product})
+    } catch (error) {
+           console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+    }
+}
+export {productadd,product,oneproduct,deleteproduct,updateproduct}
