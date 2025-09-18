@@ -1,6 +1,5 @@
 import Product from "../models/Pro.models.js"
 import { v2 as cloudinary } from "cloudinary";
-
 // Cloudinary config ek hi jagah likh do (repeat na karo)
 cloudinary.config({
   cloud_name: "dhbtwb02a",
@@ -9,19 +8,21 @@ cloudinary.config({
 });
 
 const productadd=async(req,res)=>{
-    const {ProductName,Category,Brand,color,Weight,Length,Width,Description,Price,StockQuality,StockQuantity,Discount,Availability}=req.body
     
     try {
+        const {ProductName,Category,Brand,color,Weight,Length,Width,Description,Price,StockQuality,StockQuantity,Discount,Availability}=req.body
 
 
-           if (!req.file) {
-      return res.status(400).json({ message: "Image file is required" });
-    }
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-    folder: "products",
-    });
+        if (!req.file) {
+   return res.status(400).json({ message: "Image file is required" });
+ }
+        const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+            folder: "products",
+        });
     if (!ProductName ||!Category||!Brand||!color||!Weight||!Length||!Width||!Description||!Price||!StockQuality||!StockQuantity||!Discount||!Availability) return res.status(400).json({message:"All fileds are required"})
+        const userId=req.user._id
         const newproduct  =new  Product({
+            User:userId,
     ProductName,
     Category,
     Brand,
@@ -35,7 +36,7 @@ const productadd=async(req,res)=>{
     Width,
     Description,
     Availability,
-    images:uploadResult.secure_url
+    images:[uploadResult.secure_url]
     
     })
     
