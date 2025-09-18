@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
-
+import User from "./User.models.js"
 const productSchema=new mongoose.Schema({
+    User:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User",
+      required:true
+    },
     ProductName:{
         type:String,
         required:true
@@ -38,11 +43,11 @@ const productSchema=new mongoose.Schema({
             required:true
         },
         StockQuantity:{
-            type:String,
+            type:Number,
             required:true
         },
         Discount:{
-            type:String,
+            type:Number,
             required:true
         },
         StockQuality:{
@@ -50,7 +55,7 @@ const productSchema=new mongoose.Schema({
             required:true
         },
         Availability:{
-            type:String,
+            type:Boolean,
             required:true
         },
         images:{
