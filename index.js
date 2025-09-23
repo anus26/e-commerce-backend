@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import coustrouter from './src/routes/Coustmer.routes.js'
 import monthrouter from './src/routes/Monthly.routes.js'
 import Productrouter from './src/routes/Product.routes.js'
+import routerinvoice from './src/routes/Invoice.routes.js'
 
 
 
@@ -32,6 +33,7 @@ app.use('/api/v1/user',router)
 app.use('/api/v1/coust',coustrouter)
 app.use('/api/v1',monthrouter)
 app.use('/api/v1',Productrouter)
+app.use('/api/v1',routerinvoice)
 app.get('/', (req, res) => {
   res.send('Hello karachi!')
 })
