@@ -43,11 +43,11 @@ const productSchema=new mongoose.Schema({
             required:true
         },
         StockQuantity:{
-            type:Number,
+            type:String,
             required:true
         },
         Discount:{
-            type:Number,
+            type:String,
             required:true
         },
         StockQuality:{

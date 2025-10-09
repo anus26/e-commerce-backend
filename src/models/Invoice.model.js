@@ -39,7 +39,7 @@ const InvoiceSchema=new mongoose.Schema({
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product", // 👈 relation with Product model
-                required: true,
+                required: false,
             },
             ProductName:{
                 type:String,
@@ -55,6 +55,7 @@ const InvoiceSchema=new mongoose.Schema({
         },
         Discount:{
             type:Number,
+            required:true
            
         },
         },
