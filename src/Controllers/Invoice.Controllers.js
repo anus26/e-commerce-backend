@@ -72,6 +72,17 @@ const getInvoice=async(req,res)=>{
         return res.status(500).json({message:"Internal Server Error"})
   }
 }
+const oneInvoice=async(req,res)=>{
+  try {
+    const {_id}=req.params
+    if(!_id)return res.status(400).json({messages:"Invoice id is not match"})
+    const invoice=await Invoice.findById({_id})
+    return res.status(200).json({message:"Get Invoice Successfully",invoice})
+  } catch (error) {
+       console.error("error",error.message);
+        return res.status(500).json({message:"Internal Server Error"})
+  }
+}
 
 
-export { createInvoice ,getInvoice}
+export { createInvoice ,getInvoice,oneInvoice}
