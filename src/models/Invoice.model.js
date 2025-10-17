@@ -34,6 +34,15 @@ const InvoiceSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+               Total:{
+            type:Number,
+            required:true
+           
+        },
+        Status:{
+            type:String,
+            required:true,
+        },
     Products:[
         {
             productId: {
@@ -58,6 +67,7 @@ const InvoiceSchema=new mongoose.Schema({
             required:true
            
         },
+  
         },
         ]
     
