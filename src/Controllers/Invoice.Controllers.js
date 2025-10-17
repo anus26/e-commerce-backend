@@ -3,7 +3,7 @@ import Invoice from "../models/Invoice.model.js"
 
 const createInvoice=async(req,res)=>{
   try {
-    const {InvoiceNumber, CustomerName, CustomerAddress,PaymentCondition, Currency,IssueDate, DueDate,Additionalinfo,Products}=req.body
+    const {InvoiceNumber, CustomerName, CustomerAddress,PaymentCondition, Currency,IssueDate, DueDate,Additionalinfo,Products,Total,Status}=req.body
     // const {id,ProductName,Price,StockQuantity,Discount}=req.params
     if (!InvoiceNumber) {
   return res.status(400).json({ message: "Invoice Number is required" });
@@ -40,6 +40,14 @@ if (!Additionalinfo) {
 if (!Products || Products.length === 0) {
   return res.status(400).json({ message: "At least one Product is required" });
 }
+if (!Total) {
+  return res.status(400).json({ message: "Total is required" });
+}
+if (!Status) {
+  return res.status(400).json({ message: "Status is required" });
+}
+
+
 
         // const productId=req.Proudct._id
         const invoice=new Invoice({
@@ -51,7 +59,9 @@ if (!Products || Products.length === 0) {
             Currency,IssueDate, 
             DueDate,
             Additionalinfo,
-            Products
+            Products,
+            Total,
+            Status
         })
        const SavedInvoice= await invoice.save()
         return res.status(201).json({message:"Successfully Add Data",invoice:SavedInvoice})
