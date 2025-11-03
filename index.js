@@ -10,6 +10,9 @@ import monthrouter from './src/routes/Monthly.routes.js'
 import Productrouter from './src/routes/Product.routes.js'
 import routerinvoice from './src/routes/Invoice.routes.js'
 
+import requestIp from 'request-ip'
+import visitorroutes from './src/routes/Visitor.routes.js'
+import * as useragent from "express-useragent";
 
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
@@ -21,12 +24,12 @@ app.use(cors({
   origin: "http://localhost:5173",  // your frontend URL
   credentials: true
 }));
-
+app.use(requestIp.mw())
 app.use(cookieParser())
-connectDB()
 app.use(express.urlencoded({ extended: true }));
+app.use(useragent.express()); 
 
-
+connectDB()
 
 // transporter()
 app.use('/api/v1/user',router)
@@ -34,6 +37,7 @@ app.use('/api/v1/coust',coustrouter)
 app.use('/api/v1',monthrouter)
 app.use('/api/v1',Productrouter)
 app.use('/api/v1',routerinvoice)
+app.use('/api/v1',visitorroutes)
 app.get('/', (req, res) => {
   res.send('Hello karachi!')
 })
