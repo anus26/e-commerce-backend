@@ -13,6 +13,9 @@ import routerinvoice from './src/routes/Invoice.routes.js'
 import requestIp from 'request-ip'
 import visitorroutes from './src/routes/Visitor.routes.js'
 import * as useragent from "express-useragent";
+import http from 'http'
+import { Server } from 'socket.io'
+import { setupSocket } from './Scoket.js'
 
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
@@ -30,7 +33,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(useragent.express()); 
 
 connectDB()
-
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true
+  }
+})
 // transporter()
 app.use('/api/v1/user',router)
 app.use('/api/v1/coust',coustrouter)
@@ -41,7 +50,7 @@ app.use('/api/v1',visitorroutes)
 app.get('/', (req, res) => {
   res.send('Hello karachi!')
 })
-
-app.listen(process.env.PORT, () => {
+setupSocket(io)
+server.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
 })
