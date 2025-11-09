@@ -4,11 +4,13 @@ const visitor=async(req,res)=>{
     const ip=req.clientIp
     const browser=req.useragent.browser
     const device=`${req.useragent.browser}-${req.useragent.os}`
+    const referrer=req.get('referrer')||'Direct'
     console.log(ip,device,browser);
     const visit=new Visitor({
         ip,
         browser,
-        device
+        device,
+        source:referrer
     })
     await visit.save()
     res.status(200).json({

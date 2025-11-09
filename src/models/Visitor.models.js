@@ -3,7 +3,8 @@ import  mongoose  from "mongoose";
 const visitorSchema=new mongoose.Schema({
   ip:String,
   browser:String,
-  device:String
+  device:String,
+  source:String
 },{timestamps:true})
 
 const Visitor=mongoose.model("visitor",visitorSchema)
