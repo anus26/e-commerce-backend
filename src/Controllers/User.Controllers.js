@@ -5,7 +5,13 @@ import { sendMail } from "../Utils/sendMail.js";
 import crypto from "crypto";
 
 const signup=async(req,res)=>{
-    const {fullname,email,password,confirmpassword}=req.body
+    if (!req.file) {
+    return res.status(400).json({ message: "No image file uploaded" });
+  }
+
+  const imageUrl = await req.file.path;
+
+    const {firstname,email,password,confirmpassword,lastname,Country,City,Postcode,Telephone,position}=req.body
    try {
     if (password!==confirmpassword) {
        return res.status(400).json({error:"password not match"})
@@ -15,20 +21,35 @@ const signup=async(req,res)=>{
     if (users) {
         return  res.status(400).json({error:"email already exist"})
     }
+    
+    
     const hashpassword=await bcrypt.hash(password,10)
     const user=new User({
-          fullname,
+          firstname,
           email,
           password:hashpassword,
-      
+            lastname,
+            position,
+            Telephone,
+            City,
+            Country,
+            Postcode,
+    imageUrl,
     })
      await user.save()
       if (user) {
         createTokensaveCookie(res,user._id)
           res.status(201).json({message:"user singnup successfully",user:{
               _id:user._id,
-            fullname:user.fullname,
-            email:user.email
+            firstname:user.firstname,
+            email:user.email,
+            lastname,
+            position,
+            Telephone,
+            City,
+            Country,
+            Postcode,
+          imageUrl,
           }})
       }
         
@@ -52,7 +73,7 @@ const signin=async(req,res)=>{
             
         }
         const isMatch=await  bcrypt.compare(password,user.password)
-     if (!user || isMatch) {
+     if ( !isMatch) {
 return res.status(400).json({error:"invalid email or password"})
         
      }
@@ -60,7 +81,7 @@ return res.status(400).json({error:"invalid email or password"})
 
       res.status(200).json({message:"user login successfully",user:{
     _id:user._id,
-fullname:user.fullname,
+firstname:user.firstname,
 email:user.email
 }})
     } catch (error) {
