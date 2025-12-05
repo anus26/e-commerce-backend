@@ -82,7 +82,15 @@ return res.status(400).json({error:"invalid email or password"})
       res.status(200).json({message:"user login successfully",user:{
     _id:user._id,
 firstname:user.firstname,
-email:user.email
+email:user.email,
+lastname:user.lastname,
+   position:user.lastname,
+            Telephone:user.Telephone,
+            City:user.City,
+            Country:user.Country,
+            Postcode:user.Postcode,
+          imageUrl:user.imageUrl,
+
 }})
     } catch (error) {
          console.log(error);
