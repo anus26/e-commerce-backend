@@ -6,7 +6,7 @@ const router=express.Router()
 
 router.post('/signup', upload.single("image"),signup)
 router.post('/signin',signin)
-router.post('/logout',logout)
+router.delete('/logout',logout)
 router.get('/alluserid/:id',alluserid)
 router.get('/alluser',authmiddleware,alluser)
 router.post('/sendmail',sendMailcon)
