@@ -1,8 +1,23 @@
+import { Server } from "http";
 
 
 let liveVisitors = []; // array of userIds
 
-export const setupSocket = (io) => {
+
+const userSocketmap={}
+
+
+export  const io = new Server(Server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true
+  }
+})
+export const getRecevierSocketId=(reciverId)=>{
+  return userSocketmap[reciverId]
+}
+
+ export const setupSocket = (io) => {
   io.on("connection", (socket) => {
     // Get userId from frontend
     const userId = socket.handshake.auth?.userId 
@@ -25,3 +40,4 @@ export const setupSocket = (io) => {
     });
   });
 };
+

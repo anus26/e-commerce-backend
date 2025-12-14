@@ -16,6 +16,7 @@ import * as useragent from "express-useragent";
 import http from 'http'
 import { Server } from 'socket.io'
 import { setupSocket } from './Scoket.js'
+import routermessage from './src/routes/Messges.routes.js'
 
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
@@ -47,9 +48,11 @@ app.use('/api/v1',monthrouter)
 app.use('/api/v1',Productrouter)
 app.use('/api/v1',routerinvoice)
 app.use('/api/v1',visitorroutes)
-app.get('/', (req, res) => {
-  res.send('Hello karachi!')
-})
+app.use('/api/v1',routermessage)
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 setupSocket(io)
 server.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
