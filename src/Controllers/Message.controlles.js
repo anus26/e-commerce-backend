@@ -8,6 +8,10 @@ const sendmessage=async(req,res)=>{
         const {message}=req.body
         const {id:receivedId}=req.params
         const senderId=req.user._id
+        if (senderId.toString() === receivedId.toString()) {
+  return res.status(400).json({ message: "You cannot chat with yourself" });
+}
+
         let chat=await Chat.findOne({
             participants:{$all:[senderId,receivedId]},
         })
@@ -42,4 +46,25 @@ console.log("Receiver:", receivedId);
     res.status(500).json({ error: "Internal server error" });
     }
 }
-export {sendmessage}
+
+
+
+const getmessage=async(req,res)=>{
+    try {
+        const chatuserId=req.params.id
+        const senderId=req.user._id
+      let  chat=await Chat.findOne({
+        participants:{$all:[senderId,chatuserId]},
+      }).populate("messages").lean()
+       if(!chat){
+     return res.status(200).json({messages:[]})
+    }
+    const messages=chat.messages
+        return res.status(200).json({message:"get messages",messages})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Internal server error"})
+        
+    }
+}
+export {sendmessage,getmessage}
