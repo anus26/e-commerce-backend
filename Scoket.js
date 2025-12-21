@@ -6,6 +6,7 @@ import express from "express";
 
 let liveVisitors = []; // array of userIds
 
+// {userId={online:true,lastSeen:Date}}
 
 
 const app = express();
@@ -22,33 +23,46 @@ export  const io = new Server(server, {
   },
 });
 
-  export const setupSocket = (io) => {
-    io.on("connection", (socket) => {
-      // Get userId from frontend
-      const userId = socket.handshake.auth?.userId 
-      || socket.handshake.query?.userId;
-      socket.join(userId);
-        //  userSocketmap(userId)=socket.id
-    if (userId && !liveVisitors.includes(userId)) {
-      liveVisitors.push(userId);
+export const setupSocket = (io) => {
+  const onlineUsers = {};
 
+  io.on("connection", (socket) => {
+    const userId =
+      socket.handshake.auth?.userId ||
+      socket.handshake.query?.userId;
+
+    // 🚫 BLOCK INVALID SOCKET
+    if (!userId) {
+      console.log("❌ Socket connected without userId — disconnected");
+      socket.disconnect(true);
+      return;
     }
 
-    console.log(`🟢 User Connected | Online Users:`, liveVisitors);
+    socket.join(userId);
 
-      socket.on("sendMessage", ({ receiverId, msg }) => {
-    io.to(receiverId).emit("newMessage", msg)
-  })
+    // 🟢 ONLINE
+    onlineUsers[userId] = {
+      online: true,
+      lastSeen: new Date(),
+    };
 
-    // Send list of online users to all clients
-    io.emit("liveVisitors", liveVisitors);
+    console.log("🟢 User Connected:", userId);
+    console.log("ONLINE USERS:", onlineUsers);
 
-    // Handle disconnect
+    io.emit("onlineUsers", onlineUsers);
+
     socket.on("disconnect", () => {
-      liveVisitors = liveVisitors.filter(id => id !== userId);
-      console.log(`❌ User Disconnected | Online Users:`, liveVisitors);
-      io.emit("liveVisitors", liveVisitors);
+      onlineUsers[userId] = {
+        online: false,
+        lastSeen: new Date(),
+      };
+
+      console.log("❌ User Disconnected:", userId);
+      console.log("ONLINE USERS:", onlineUsers);
+
+      io.emit("onlineUsers", onlineUsers);
     });
   });
 };
+
 
