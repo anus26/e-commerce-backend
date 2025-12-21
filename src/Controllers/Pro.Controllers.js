@@ -10,15 +10,16 @@ cloudinary.config({
 const productadd=async(req,res)=>{
     
     try {
-        const {ProductName,Category,Brand,color,Weight,Length,Width,Description,Price,StockQuality,StockQuantity,Discount,Availability}=req.body
-
-
         if (!req.file) {
    return res.status(400).json({ message: "Image file is required" });
  }
-        const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-            folder: "products",
-        });
+   const uploadResult = await req.file.path;
+        const {ProductName,Category,Brand,color,Weight,Length,Width,Description,Price,StockQuality,StockQuantity,Discount,Availability}=req.body
+
+
+        // const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        //     folder: "products",
+        // });
     if (!ProductName ||!Category||!Brand||!color||!Weight||!Length||!Width||!Description||!Price||!StockQuality||!StockQuantity||!Discount||!Availability) return res.status(400).json({message:"All fileds are required"})
         const userId=req.user._id
         const newproduct  =new  Product({
