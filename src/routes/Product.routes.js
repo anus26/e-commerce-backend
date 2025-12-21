@@ -5,7 +5,7 @@ import authmiddleware from "../middleware/User.middleware.js"
 const Productrouter=express.Router()
 
 
-Productrouter.post("/product",upload.single("image"),authmiddleware,productadd)
+Productrouter.post("/product",upload.single("images"),authmiddleware,productadd)
 Productrouter.get("/product",product)
 Productrouter.get("/product/:_id",oneproduct)
 Productrouter.delete("/product/:_id",deleteproduct)
