@@ -7,7 +7,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import requestIp from "request-ip";
 import * as useragent from "express-useragent";
-import { Server } from "socket.io";
 
 import connectDB from "./src/Config/db.js";
 
@@ -19,6 +18,7 @@ import Productrouter from "./src/routes/Product.routes.js";
 import routerinvoice from "./src/routes/Invoice.routes.js";
 import visitorroutes from "./src/routes/Visitor.routes.js";
 import routermessage from "./src/routes/Messges.routes.js";
+import { setupSocket } from "./Scoket.js";
 // import { setupSocket } from "./Scoket.js";
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
@@ -53,17 +53,20 @@ app.use("/api/v1", visitorroutes);
 app.use("/api/v1", routermessage);
 
 // HTTP SERVER ✅
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
 // SOCKET.IO ✅
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    credentials: true,
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   },
+// });
 
-// setupSocket(io);
+const server = http.createServer(app);
+
+// ✅ SOCKET SETUP
+const io = setupSocket(server)
 // optional: socket access in routes
 app.use((req, res, next) => {
   req.io = io;

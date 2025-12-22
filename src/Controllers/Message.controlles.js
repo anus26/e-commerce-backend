@@ -1,5 +1,5 @@
 
-import server, { io } from "../../Scoket.js";
+import { Server } from "socket.io";
 import Chat from "../models/Chat.modles.js"
 import Message from "../models/Message.models.js"
 
@@ -36,7 +36,7 @@ const sendmessage = async (req, res) => {
 
 const populatedMessage = await Message.findById(newMessage._id).lean();
 
-const receiverSocketId =server(receiverId);
+const receiverSocketId =Server(receiverId);
 if (receiverSocketId) {
   io.to(receiverSocketId).emit("newMessage", populatedMessage);
 }
