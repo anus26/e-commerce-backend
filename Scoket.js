@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 // 🔹 Stores
 const onlineUsers = {};      // login users
-let liveVisitors = 0;        // total live visitors
+let liveVisitors = [];        // total live visitors
 
 export const io = new Server(server, {
   cors: {
