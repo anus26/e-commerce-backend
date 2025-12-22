@@ -1,68 +1,60 @@
 import http from "http";
-import { Server } from "socket.io";
-
-
 import express from "express";
-
-let liveVisitors = []; // array of userIds
-
-// {userId={online:true,lastSeen:Date}}
-
+import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
-const users={}
-export const getReciverSocketId=( receiverId)=>{
-  return users[ receiverId]
-}
 
-export  const io = new Server(server, {
+// 🔹 Stores
+const onlineUsers = {};      // login users
+let liveVisitors = 0;        // total live visitors
+
+export const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     credentials: true,
   },
 });
 
-export const setupSocket = (io) => {
-  const onlineUsers = {};
+io.on("connection", (socket) => {
+  // 🔵 LIVE VISITOR
+  liveVisitors++;
+  io.emit("liveVisitors", liveVisitors);
 
-  io.on("connection", (socket) => {
-    const userId =
-      socket.handshake.auth?.userId ||
-      socket.handshake.query?.userId;
+  const userId =
+    socket.handshake.auth?.userId ||
+    socket.handshake.query?.userId;
 
-    // 🚫 BLOCK INVALID SOCKET
-    if (!userId) {
-      console.log("❌ Socket connected without userId — disconnected");
-      socket.disconnect(true);
-      return;
-    }
-
+  // 🟢 LOGIN USER
+  if (userId) {
     socket.join(userId);
 
-    // 🟢 ONLINE
     onlineUsers[userId] = {
       online: true,
       lastSeen: new Date(),
     };
 
-    console.log("🟢 User Connected:", userId);
-    console.log("ONLINE USERS:", onlineUsers);
-
+    console.log("🟢 User Online:", userId);
     io.emit("onlineUsers", onlineUsers);
+  }
 
-    socket.on("disconnect", () => {
+  socket.on("disconnect", () => {
+    // 🔴 LIVE VISITOR REMOVE
+    liveVisitors--;
+    io.emit("liveVisitors", liveVisitors);
+
+    // 🔴 USER OFFLINE
+    if (userId) {
       onlineUsers[userId] = {
         online: false,
         lastSeen: new Date(),
       };
 
-      console.log("❌ User Disconnected:", userId);
-      console.log("ONLINE USERS:", onlineUsers);
-
+      console.log("🔴 User Offline:", userId);
       io.emit("onlineUsers", onlineUsers);
-    });
+    }
   });
-};
+});
 
+export default server;
 

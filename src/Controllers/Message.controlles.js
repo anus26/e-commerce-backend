@@ -1,5 +1,5 @@
 
-import { getReciverSocketId } from "../../Scoket.js";
+import server, { io } from "../../Scoket.js";
 import Chat from "../models/Chat.modles.js"
 import Message from "../models/Message.models.js"
 
@@ -36,7 +36,7 @@ const sendmessage = async (req, res) => {
 
 const populatedMessage = await Message.findById(newMessage._id).lean();
 
-const receiverSocketId = getReciverSocketId(receiverId);
+const receiverSocketId =server(receiverId);
 if (receiverSocketId) {
   io.to(receiverSocketId).emit("newMessage", populatedMessage);
 }

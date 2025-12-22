@@ -19,7 +19,7 @@ import Productrouter from "./src/routes/Product.routes.js";
 import routerinvoice from "./src/routes/Invoice.routes.js";
 import visitorroutes from "./src/routes/Visitor.routes.js";
 import routermessage from "./src/routes/Messges.routes.js";
-import { setupSocket } from "./Scoket.js";
+// import { setupSocket } from "./Scoket.js";
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
 console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "Loaded ✅" : "Not Loaded ❌");
@@ -63,7 +63,7 @@ const io = new Server(server, {
   },
 });
 
-setupSocket(io);
+// setupSocket(io);
 // optional: socket access in routes
 app.use((req, res, next) => {
   req.io = io;
