@@ -18,7 +18,7 @@ import Productrouter from "./src/routes/Product.routes.js";
 import routerinvoice from "./src/routes/Invoice.routes.js";
 import visitorroutes from "./src/routes/Visitor.routes.js";
 import routermessage from "./src/routes/Messges.routes.js";
-import { setupSocket } from "./Scoket.js";
+import { setupSocket } from "./scoket.js";
 // import { setupSocket } from "./Scoket.js";
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
