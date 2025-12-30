@@ -2,6 +2,7 @@
 import { Server } from "socket.io";
 import Chat from "../models/Chat.modles.js"
 import Message from "../models/Message.models.js"
+import { setupSocket } from "../../Scoket.js";
 
 const sendmessage = async (req, res) => {
     try {
@@ -36,7 +37,7 @@ const sendmessage = async (req, res) => {
 
 const populatedMessage = await Message.findById(newMessage._id).lean();
 
-const receiverSocketId =Server(receiverId);
+const receiverSocketId =setupSocket(receiverId);
 if (receiverSocketId) {
   io.to(receiverSocketId).emit("newMessage", populatedMessage);
 }

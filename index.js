@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import http from "http"; // ✅ REQUIRED
+import http, { Server } from "http"; // ✅ REQUIRED
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import requestIp from "request-ip";
@@ -18,7 +18,8 @@ import Productrouter from "./src/routes/Product.routes.js";
 import routerinvoice from "./src/routes/Invoice.routes.js";
 import visitorroutes from "./src/routes/Visitor.routes.js";
 import routermessage from "./src/routes/Messges.routes.js";
-import { setupSocket } from "./scoket.js";
+import { setupSocket } from "./Scoket.js";
+
 // import { setupSocket } from "./Scoket.js";
 
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
