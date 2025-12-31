@@ -1,11 +1,11 @@
 
 import { Server } from "socket.io";
 
-let onlineUsers = {};
+const onlineUsers = {};
 let liveVisitors = 0;
-
-export const setupSocket = (server) => {
-  const io = new Server(server, {
+let io
+ const setupSocket = (server) => {
+   io = new Server(server, {
     cors: {
       origin: [
         "http://localhost:5173",
@@ -27,11 +27,12 @@ export const setupSocket = (server) => {
 
     // 🟢 USER ONLINE
     if (userId) {
-      onlineUsers[userId] = {
-        online: true,
-        lastSeen: new Date(),
-      };
-
+      onlineUsers[userId] = 
+      // {
+      //   online: true,
+      //   lastSeen: new Date(),
+      // };
+      socket.id
       socket.join(userId);
       io.emit("onlineUsers", onlineUsers);
     }
@@ -54,3 +55,4 @@ export const setupSocket = (server) => {
 
   return io;
 };
+export {io,onlineUsers,setupSocket}
