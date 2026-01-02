@@ -8,8 +8,8 @@ let io
    io = new Server(server, {
     cors: {
       origin: [
-        "https://ecommerce-admin-panel-one-hazel.vercel.app/",
-        "https://ashamed-shirlene-anusraza123bm-0a1cc794.koyeb.app/",
+        "https://ecommerce-admin-panel-one-hazel.vercel.app",
+        "https://ashamed-shirlene-anusraza123bm-0a1cc794.koyeb.app",
       ],
       credentials: true,
     },
