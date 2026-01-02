@@ -36,7 +36,7 @@ app.use(useragent.express());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://ecommerce-admin-panel-one-hazel.vercel.app/",
     credentials: true,
   })
 );
