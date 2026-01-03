@@ -17,7 +17,7 @@ let io
   });
 
   io.on("connection", (socket) => {
-    // 🔵 LIVE VISITOR
+  
     liveVisitors++;
     io.emit("liveVisitors", liveVisitors);
 
@@ -25,7 +25,7 @@ let io
       socket.handshake.auth?.userId ||
       socket.handshake.query?.userId;
 
-    // 🟢 USER ONLINE
+ 
     if (userId) {
       onlineUsers[userId] = 
       //  {
@@ -47,7 +47,7 @@ let io
       if (userId) {
         onlineUsers[userId] = {
           online: false,
-          socketId:null,
+   
           lastSeen: new Date(),
         };
         io.emit("onlineUsers", onlineUsers);
