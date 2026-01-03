@@ -27,14 +27,14 @@ let io
 
     // 🟢 USER ONLINE
     if (userId) {
-      onlineUsers[userId] = 
-      // {
-      //   online: true,
-      //   lastSeen: new Date(),
-      // };
-      socket.id
-      socket.join(userId);
-      io.emit("onlineUsers", onlineUsers);
+      onlineUsers[userId] =  {
+        online: true,
+  
+        socketId:socket.id,
+        lastSeen:null
+      }
+      socket.join(userId),
+      io.emit("onlineUsers", onlineUsers)
     }
 
     socket.on("disconnect", () => {
@@ -46,6 +46,7 @@ let io
       if (userId) {
         onlineUsers[userId] = {
           online: false,
+          socketId:null,
           lastSeen: new Date(),
         };
         io.emit("onlineUsers", onlineUsers);
