@@ -30,9 +30,9 @@ let io
       onlineUsers[userId] =  {
         online: true,
   
-        socketId:socket.id,
         lastSeen:null
       }
+      socket.id,
       socket.join(userId),
       io.emit("onlineUsers", onlineUsers)
     }
