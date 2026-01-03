@@ -8,7 +8,7 @@ let io
    io = new Server(server, {
     cors: {
       origin: [
-        "https://ecommerce-admin-panel-one-hazel.vercel.app",
+        "http://localhost:5173",
         "https://ashamed-shirlene-anusraza123bm-0a1cc794.koyeb.app",
       ],
       credentials: true,
