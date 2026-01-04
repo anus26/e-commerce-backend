@@ -17,7 +17,6 @@ let io
   });
 
   io.on("connection", (socket) => {
-  console.log("socket",socket);
   
     liveVisitors++;
     io.emit("liveVisitors", liveVisitors);
@@ -28,17 +27,18 @@ let io
 
 
  
-    socket.on("setuser", (userId)=> {
+    if (userId) {
  
-      onlineUsers[socket.id]=userId
-
+      onlineUsers[userId] = {
+        online:true
+      }
+      // socket.id 
     
       socket.join(userId),
     
-      io.emit("onlineUsers",Object.values(onlineUsers))
+      io.emit("onlineUsers", onlineUsers)
         
     }
-  )
     
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
@@ -47,10 +47,13 @@ let io
 
       // 🔴 USER OFFLINE
       if (userId) {
-      
-        delete onlineUsers[socket.id]
-    
-        io.emit("onlineUsers", Object.values(onlineUsers));
+        
+        onlineUsers[userId] = {
+          online: false,
+          
+        };
+        socket.null,
+        io.emit("onlineUsers", onlineUsers);
       }
     });
   });
