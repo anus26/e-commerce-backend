@@ -25,6 +25,7 @@ let io
       socket.handshake.auth?.userId ||
       socket.handshake.query?.userId;
 
+
  
     if (userId) {
  
@@ -32,12 +33,12 @@ let io
         
         online: true,
       };
-      socket.id 
-    
-      socket.join(userId),
-      io.emit("onlineUsers", onlineUsers)
     }
-
+    socket.id 
+  
+    socket.join(userId),
+    io.emit("onlineUsers", onlineUsers)
+    
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
       liveVisitors--;
