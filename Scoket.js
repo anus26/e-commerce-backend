@@ -26,16 +26,15 @@ let io
       socket.handshake.query?.userId;
 
  
-    if (userId) {
+    if (userId) onlineUsers[userId]={
  
       
-    onlineUsers[userId] = {
-      socketId: socket.id,
-      online: true,
-  };
+
+    socketId: socket.id,
+    online: true,
     
-      socket.join(userId),
-      io.emit("onlineUsers", onlineUsers)
+    socket:  socket.join(userId),
+      onlineUsers:io.emit("onlineUsers", onlineUsers)
     }
 
     socket.on("disconnect", () => {
