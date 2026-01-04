@@ -31,9 +31,11 @@ let io
        
             onlineUsers[userId] = 
             
-            {online:true,
-              socketId:socket.id
-            }
+            // {online:true,
+              
+              
+            // }
+          socket.id
             
             io.emit("onlineUsers", onlineUsers)
             
@@ -50,10 +52,11 @@ let io
       // 🔴 USER OFFLINE
       if (userId) {
         
-        onlineUsers[userId] = {
-          online: false,
-          socketId:null
-        };
+        onlineUsers[userId] = 
+        // socketId:null {
+        //   online: false,
+        // };
+       
          
         
         io.emit("onlineUsers", onlineUsers);
