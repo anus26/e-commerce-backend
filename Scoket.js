@@ -19,8 +19,7 @@ let io
   io.on("connection", (socket) => {
   
     
-    
-    socket.on("connected",()=>{
+
         liveVisitors++;
         io.emit("liveVisitors", liveVisitors);
     
@@ -39,12 +38,10 @@ let io
             io.emit("onlineUsers", onlineUsers)
             
           }
-      })
+    
  
       
-      // socket.join(user),
-    
-    socket.id 
+     
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
       liveVisitors--;
