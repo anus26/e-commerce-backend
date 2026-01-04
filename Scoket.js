@@ -1,5 +1,5 @@
 
-import { Server, Socket } from "socket.io";
+import { Server} from "socket.io";
 
 const onlineUsers = {};
 let liveVisitors = 0;
@@ -29,16 +29,14 @@ let io
  
     if (userId) {
  
-      onlineUsers[userId] = {
-        online:true
-      }
-        
-    }
-      socket.id 
+      onlineUsers[socket.id]=userId
+     
     
       socket.join(userId),
     
-      io.emit("onlineUsers", onlineUsers)
+      io.emit("onlineUsers",Object.values( onlineUsers))
+        
+    }
     
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
@@ -47,14 +45,11 @@ let io
 
       // 🔴 USER OFFLINE
       if (userId) {
-        onlineUsers[userId] = {
-          online: false,
-          
-          
-        };
+      
+        delete onlineUsers[socket.id]
+    
+        io.emit("onlineUsers", Object.values(onlineUsers));
       }
-        socket.null,
-        io.emit("onlineUsers", onlineUsers);
     });
   });
 
