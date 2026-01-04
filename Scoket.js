@@ -1,5 +1,5 @@
 
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 const onlineUsers = {};
 let liveVisitors = 0;
@@ -33,10 +33,7 @@ let io
       socketId: socket.id,
       online: true,
   };
-      // {
-   
-      //     online: true,
-      // }
+    
       socket.join(userId),
       io.emit("onlineUsers", onlineUsers)
     }
@@ -49,10 +46,10 @@ let io
       // 🔴 USER OFFLINE
       if (userId) {
         onlineUsers[userId] = {
-          socketId:socket.id,
+          socketId:null,
           online: false,
            
-          lastSeen: new Date(),
+       
         };
         io.emit("onlineUsers", onlineUsers);
       }
