@@ -27,9 +27,12 @@ let io
 
  
     if (userId) {
-      onlineUsers[userId] = 
+ 
       
-      socket.id,
+    onlineUsers[userId] = {
+      socketId: socket.id,
+      online: true,
+  };
       // {
    
       //     online: true,
