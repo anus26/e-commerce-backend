@@ -30,14 +30,15 @@ let io
     if (userId) {
  
       onlineUsers[userId] = {
+        online:true
+      }
         
-        online: true,
-      };
     }
-    socket.id 
-  
-    socket.join(userId),
-    io.emit("onlineUsers", onlineUsers)
+      socket.id 
+    
+      socket.join(userId),
+    
+      io.emit("onlineUsers", onlineUsers)
     
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
@@ -51,9 +52,9 @@ let io
           
           
         };
+      }
         socket.null,
         io.emit("onlineUsers", onlineUsers);
-      }
     });
   });
 
