@@ -18,30 +18,31 @@ let io
 
   io.on("connection", (socket) => {
   
-    liveVisitors++;
-    io.emit("liveVisitors", liveVisitors);
-
-    const userId =
-      socket.handshake.auth?.userId ||
-      socket.handshake.query?.userId;
-
-
-      socket.on((userId)=>{
-           userId.socket.id
-           io.emit("socket",socket)
+    
+    
+    socket.on("connected",()=>{
+        liveVisitors++;
+        io.emit("liveVisitors", liveVisitors);
+    
+        const userId =
+          socket.handshake.auth?.userId ||
+          socket.handshake.query?.userId;
+       
+          if (userId) {
+       
+            onlineUsers[userId] = 
+            
+            {online:true,
+              socketId:socket.id
+            }
+            
+            io.emit("onlineUsers", onlineUsers)
+            
+          }
       })
  
       
       // socket.join(user),
-    if (userId) {
- 
-      onlineUsers[userId] = 
-      
-      {online:true}
-      
-      io.emit("onlineUsers", onlineUsers)
-      
-    }
     
     socket.id 
     socket.on("disconnect", () => {
@@ -54,7 +55,7 @@ let io
         
         onlineUsers[userId] = {
           online: false,
-          
+          socketId:null
         };
          
         
