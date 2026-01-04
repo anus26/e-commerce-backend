@@ -26,15 +26,16 @@ let io
       socket.handshake.query?.userId;
 
  
-    if (userId) onlineUsers[userId]={
+    if (userId) {
  
-      
-
-    socketId: socket.id,
-    online: true,
+      onlineUsers[userId] = {
+        
+        online: true,
+      };
+      socket.id 
     
-    socket:  socket.join(userId),
-      onlineUsers:io.emit("onlineUsers", onlineUsers)
+      socket.join(userId),
+      io.emit("onlineUsers", onlineUsers)
     }
 
     socket.on("disconnect", () => {
@@ -45,11 +46,11 @@ let io
       // 🔴 USER OFFLINE
       if (userId) {
         onlineUsers[userId] = {
-          socketId:null,
           online: false,
-           
-       
+          
+          
         };
+        socket.null,
         io.emit("onlineUsers", onlineUsers);
       }
     });
