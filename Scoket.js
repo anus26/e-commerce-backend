@@ -27,19 +27,19 @@ let io
 
 
  
+      
+      // socket.join(user),
     if (userId) {
  
       onlineUsers[userId] = 
       
       {online:true}
-      socket.id 
-    
-      socket.join(userId),
-    
+      
       io.emit("onlineUsers", onlineUsers)
-        
+      
     }
     
+    socket.id 
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
       liveVisitors--;
@@ -52,7 +52,7 @@ let io
           online: false,
           
         };
-        
+         
         
         io.emit("onlineUsers", onlineUsers);
       }
