@@ -29,9 +29,9 @@ let io
     if (userId) {
       onlineUsers[userId] = 
       
-      
+      socket.id,
       {
-        socket:socket.id,
+   
           online: true,
       }
       socket.join(userId),
