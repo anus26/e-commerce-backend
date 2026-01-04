@@ -29,10 +29,10 @@ let io
  
     if (userId) {
  
-      onlineUsers[userId] = {
-        online:true
-      }
-      // socket.id 
+      onlineUsers[userId] = 
+      
+      {online:true}
+      socket.id 
     
       socket.join(userId),
     
@@ -52,7 +52,8 @@ let io
           online: false,
           
         };
-        socket.null,
+        
+        
         io.emit("onlineUsers", onlineUsers);
       }
     });
