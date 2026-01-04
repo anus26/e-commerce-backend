@@ -30,8 +30,8 @@ let io
       onlineUsers[userId] = 
       
       
-      socket.id,
       {
+        socket:socket.id,
           online: true,
       }
       socket.join(userId),
