@@ -49,8 +49,9 @@ let io
       // 🔴 USER OFFLINE
       if (userId) {
         onlineUsers[userId] = {
+          socketId:socket.id,
           online: false,
-   
+           
           lastSeen: new Date(),
         };
         io.emit("onlineUsers", onlineUsers);
