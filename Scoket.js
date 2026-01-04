@@ -17,6 +17,7 @@ let io
   });
 
   io.on("connection", (socket) => {
+  console.log("socket",socket);
   
     liveVisitors++;
     io.emit("liveVisitors", liveVisitors);
@@ -27,16 +28,17 @@ let io
 
 
  
-    if (userId) {
+    socket.on("setuser", (userId)=> {
  
       onlineUsers[socket.id]=userId
-     
+
     
       socket.join(userId),
     
-      io.emit("onlineUsers",Object.values( onlineUsers))
+      io.emit("onlineUsers",Object.values(onlineUsers))
         
     }
+  )
     
     socket.on("disconnect", () => {
       // 🔴 LIVE VISITOR
