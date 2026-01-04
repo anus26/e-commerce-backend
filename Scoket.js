@@ -26,6 +26,10 @@ let io
       socket.handshake.query?.userId;
 
 
+      socket.on((userId)=>{
+           userId.socket.id
+           io.emit("socket",socket)
+      })
  
       
       // socket.join(user),
