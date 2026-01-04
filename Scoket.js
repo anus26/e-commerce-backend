@@ -30,10 +30,10 @@ let io
       onlineUsers[userId] = 
       
       socket.id,
-      {
+      // {
    
-          online: true,
-      }
+      //     online: true,
+      // }
       socket.join(userId),
       io.emit("onlineUsers", onlineUsers)
     }
