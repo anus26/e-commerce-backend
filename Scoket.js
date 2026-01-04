@@ -28,12 +28,12 @@ let io
  
     if (userId) {
       onlineUsers[userId] = 
-       {
-        online: true,
-  
-
-      }
+      
+      
       socket.id,
+      {
+          online: true,
+      }
       socket.join(userId),
       io.emit("onlineUsers", onlineUsers)
     }
