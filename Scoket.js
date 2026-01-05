@@ -44,16 +44,17 @@ let io
       
      
     socket.on("disconnect", () => {
-      // 🔴 LIVE VISITOR
+
       liveVisitors--;
       io.emit("liveVisitors", liveVisitors);
 
-      // 🔴 USER OFFLINE
+
       if (userId) {
         
         onlineUsers[userId] = 
        {
           online: false,
+          socket:null
         };
        
          
