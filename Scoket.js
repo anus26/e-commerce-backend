@@ -1,11 +1,11 @@
-
-import { Server} from "socket.io";
+import { Server } from "socket.io";
 
 const onlineUsers = {};
 let liveVisitors = 0;
-let io
- const setupSocket = (server) => {
-   io = new Server(server, {
+let io;
+
+const setupSocket = (server) => {
+  io = new Server(server, {
     cors: {
       origin: [
         "http://localhost:5173",
@@ -13,52 +13,50 @@ let io
       ],
       credentials: true,
     },
-    transports: ["polling", "websocket"],
+    transports: ["websocket"],
   });
 
   io.on("connection", (socket) => {
-  
-    
+    // ✅ Live visitors
+    liveVisitors++;
+    io.emit("liveVisitors", liveVisitors);
 
-        liveVisitors++;
-        io.emit("liveVisitors", liveVisitors);
-    
-        const userId =
-          socket.handshake.auth?.userId ||
-          socket.handshake.query?.userId;
-       
-         
-            
-        
-        
-            
-        
-          if (userId) {
-            onlineUsers[userId]=
-            {online:true,socket:socket}
-            io.emit("onlineUsers",onlineUsers)
-            
-          }
-    
- 
-      
-     
+    const userId =
+      socket.handshake.auth?.userId ||
+      socket.handshake.query?.userId;
+
+    // ✅ Track online users
+    if (userId) {
+      if (!onlineUsers[userId]) {
+        onlineUsers[userId] = {
+          online: true,
+          sockets: [],
+        };
+      }
+
+      onlineUsers[userId].online = true;
+      onlineUsers[userId].sockets.push(socket.id);
+
+      io.emit("onlineUsers", onlineUsers);
+    }
+
     socket.on("disconnect", () => {
-
-      liveVisitors--;
+      // ✅ Prevent negative count
+      liveVisitors = Math.max(0, liveVisitors - 1);
       io.emit("liveVisitors", liveVisitors);
 
+      if (userId && onlineUsers[userId]) {
+        // Remove socket ID
+        onlineUsers[userId].sockets =
+          onlineUsers[userId].sockets.filter(
+            (id) => id !== socket.id
+          );
 
-      if (userId) {
-        
-        onlineUsers[userId] = 
-       {
-          online: false,
-          socket:null
-        };
-       
-         
-        
+        // If no active sockets → offline
+        if (onlineUsers[userId].sockets.length === 0) {
+          onlineUsers[userId].online = false;
+        }
+
         io.emit("onlineUsers", onlineUsers);
       }
     });
@@ -66,4 +64,6 @@ let io
 
   return io;
 };
-export {io,onlineUsers,setupSocket}
+
+export { io, onlineUsers, setupSocket };
+
