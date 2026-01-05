@@ -31,13 +31,13 @@ let io
        
             onlineUsers[userId] = 
             
-            // {online:true,
+            {online:true,
               
               
-            // }
-          socket.id
+            }
             
             io.emit("onlineUsers", onlineUsers)
+            socket.id
             
           }
     
