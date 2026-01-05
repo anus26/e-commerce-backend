@@ -34,10 +34,16 @@ let io
             
         
           if (userId) {
-            onlineUsers[userId]=
-            {online:true,socket:socket.id}
-            io.emit("onlineUsers",onlineUsers)
+            if (!onlineUsers[userId]) {
+
+              onlineUsers[userId]=
+              {online:true,socket:[]}
+              
             
+          }
+
+      onlineUsers[userId].online=true
+      onlineUsers[userId].socket.push(socket.id)
           }
     
  

@@ -36,9 +36,9 @@ const sendmessage = async (req, res) => {
 
 const populatedMessage = await Message.findById(newMessage._id).lean();
 
-const receiverSocketId =onlineUsers[receiverId];
-if (receiverSocketId?.online && receiverSocketId.socket?.length>0) {
-  receiverSocketId.sockets.forEach((socketId) => {
+const receiver =onlineUsers[receiverId];
+if (receiver?.online && receiver.socket?.length>0) {
+  receiver.sockets.forEach((socketId) => {
     
     io.to(socketId).emit("newMessage", populatedMessage);
   });
