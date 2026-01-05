@@ -27,21 +27,15 @@ let io
           socket.handshake.auth?.userId ||
           socket.handshake.query?.userId;
        
-          if (userId) {
-       
-            onlineUsers[userId] = 
+         
             
         
-            {online:true,
-              
-              
-            }
+        
             
-            io.emit("onlineUsers", onlineUsers)
-            
-          }
+        
           if (userId) {
-            onlineUsers[userId]=socket.id
+            onlineUsers[userId]=
+            {onlineUsers:true,socket}
             io.emit("onlineUsers",onlineUsers)
             
           }
@@ -58,9 +52,9 @@ let io
       if (userId) {
         
         onlineUsers[userId] = 
-        // socketId:null {
-        //   online: false,
-        // };
+       {
+          online: false,
+        };
        
          
         
