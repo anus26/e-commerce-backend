@@ -38,9 +38,9 @@ const populatedMessage = await Message.findById(newMessage._id).lean();
 
 const receiverSocketId =onlineUsers[receiverId];
 if (receiverSocketId?.online && receiverSocketId.socket?.length>0) {
-  receiverSocketId.socket.forEach((socketId) => {
+  receiverSocketId.sockets.forEach((socketId) => {
     
-    io.to(receiverSocketId).emit("newMessage", populatedMessage);
+    io.to(socketId).emit("newMessage", populatedMessage);
   });
 }
 
