@@ -35,7 +35,7 @@ let io
         
           if (userId) {
             onlineUsers[userId]=
-            {onlineUsers:true,socket}
+            {online:true,socket}
             io.emit("onlineUsers",onlineUsers)
             
           }
