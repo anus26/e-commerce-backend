@@ -49,25 +49,24 @@ let io
  
       
      
-    socket.on("disconnect", () => {
+ socket.on("disconnect", () => {
+  liveVisitors = Math.max(0, liveVisitors - 1)
+  io.emit("liveVisitors", liveVisitors)
 
-      liveVisitors--;
-      io.emit("liveVisitors", liveVisitors);
+  if (userId && onlineUsers[userId]) {
+    // Remove this socket
+    onlineUsers[userId].socket =
+      onlineUsers[userId].socket.filter(id => id !== socket.id)
 
+    // Agar ab koi socket nahi bacha → offline
+    if (onlineUsers[userId].socket.length === 0) {
+      onlineUsers[userId].online = false
+    }
 
-      if (userId) {
-        
-        onlineUsers[userId] = 
-       {
-          online: false,
-          socket:null
-        };
-       
-         
-        
-        io.emit("onlineUsers", onlineUsers);
-      }
-    });
+    io.emit("onlineUsers", onlineUsers)
+  }
+})
+
   });
 
   return io;
