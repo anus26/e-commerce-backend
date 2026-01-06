@@ -36,13 +36,13 @@ const sendmessage = async (req, res) => {
 
 const populatedMessage = await Message.findById(newMessage._id).lean();
 
-const receiver =onlineUsers[receiverId];
-if (receiver?.online && receiver.socket?.length>0) {
-  receiver.sockets.forEach((socketId) => {
-    
-    io.to(socketId).emit("newMessage", populatedMessage);
-  });
-}
+
+   const receiver = onlineUsers[receiverId];
+    if (receiver?.online && Array.isArray(receiver.socket)) {
+      receiver.socket.forEach((socketId) => {
+        io.to(socketId).emit("newMessage", populatedMessage);
+      });
+    }
 
     res.status(201).json(newMessage);
 
