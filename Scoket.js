@@ -44,6 +44,7 @@ let io
 
       onlineUsers[userId].online=true
       onlineUsers[userId].socket.push(socket.id)
+      io.emit("onlineUsers",onlineUsers)
           }
     
  
@@ -54,11 +55,10 @@ let io
   io.emit("liveVisitors", liveVisitors)
 
   if (userId && onlineUsers[userId]) {
-    // Remove this socket
     onlineUsers[userId].socket =
       onlineUsers[userId].socket.filter(id => id !== socket.id)
 
-    // Agar ab koi socket nahi bacha → offline
+    
     if (onlineUsers[userId].socket.length === 0) {
       onlineUsers[userId].online = false
     }
