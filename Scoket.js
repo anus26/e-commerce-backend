@@ -36,8 +36,8 @@ let io
           if (userId) {
          onlineUsers[socket.id]=data.userId
 
-      onlineUsers[userId].online=true
-      onlineUsers[userId].socket.push(socket.id)
+      // onlineUsers[userId].online=true
+      // onlineUsers[userId].socket.push(socket.id)
       io.emit("onlineUsers",Object.values(onlineUsers))
           }
     
