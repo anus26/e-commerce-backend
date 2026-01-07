@@ -34,11 +34,17 @@ let io
             
         
           if (userId) {
-         onlineUsers[socket.id]=data.userId
+            if (!onlineUsers[userId]) {
 
-      // onlineUsers[userId].online=true
-      // onlineUsers[userId].socket.push(socket.id)
-      io.emit("onlineUsers",Object.values(onlineUsers))
+              onlineUsers[userId]=
+              {online:true,socket:[]}
+              
+            
+          }
+
+      onlineUsers[userId].online=true
+      onlineUsers[userId].socket.push(socket.id)
+      io.emit("onlineUsers",onlineUsers)
           }
     
  
@@ -48,22 +54,16 @@ let io
   liveVisitors = Math.max(0, liveVisitors - 1)
   io.emit("liveVisitors", liveVisitors)
 
-  // if (userId && onlineUsers[userId]) {
-  //   onlineUsers[userId].socket =
-  //     onlineUsers[userId].socket.filter(id => id !== socket.id)
+  if (userId && onlineUsers[userId]) {
+    onlineUsers[userId].socket =
+      onlineUsers[userId].socket.filter(id => id !== socket.id)
 
     
-  //   // if (onlineUsers[userId].socket.length === 0) {
-  //   //   onlineUsers[userId].online = false
-  //   // }
+    if (onlineUsers[userId].socket.length === 0) {
+      onlineUsers[userId].online = false
+    }
 
-  //   io.emit("onlineUsers", onlineUsers)
-  // }
-
-  const userId=onlineUsers[socket.id]
-  if(userId){
-    delete onlineUsers[socket.id]
-          io.emit('update online users', Object.values(onlineUsers));
+    io.emit("onlineUsers", onlineUsers)
   }
 })
 
