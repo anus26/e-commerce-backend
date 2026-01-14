@@ -36,7 +36,7 @@ app.use(useragent.express());
 
 app.use(
   cors({
-    origin:"https://ecommerce-admin-panel-gpj1.vercel.app",
+    origin:"https://ecommerce-admin-panel-smoky-three.vercel.app",
     credentials: true,
   })
 );
