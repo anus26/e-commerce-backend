@@ -11,7 +11,7 @@ const signup=async(req,res)=>{
 
   const imageUrl = await req.file.path;
 
-    const {firstname,email,password,confirmpassword,lastname,Country,City,Postcode,Telephone,position}=req.body
+    const {firstname,email,password,confirmpassword,lastname,City,Postcode,Telephone,position}=req.body
    try {
     if (password!==confirmpassword) {
        return res.status(400).json({error:"password not match"})
@@ -32,7 +32,7 @@ const signup=async(req,res)=>{
             position,
             Telephone,
             City,
-            Country,
+          
             Postcode,
     imageUrl,
     })
@@ -47,7 +47,7 @@ const signup=async(req,res)=>{
             position,
             Telephone,
             City,
-            Country,
+         
             Postcode,
           imageUrl,
           }})

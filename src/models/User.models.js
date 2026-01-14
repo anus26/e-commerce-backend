@@ -18,10 +18,7 @@ const userSchema=new mongoose.Schema({
         type:Number,
        required:true
     },
-       Country:{
-        type:String,
-       required:true
-    },
+  
        City:{
         type:String,
        required:true
