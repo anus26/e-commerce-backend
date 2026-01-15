@@ -36,7 +36,7 @@ app.use(useragent.express());
 
 app.use(
   cors({
-    origin:"https://ecommerce-admin-panel-smoky-three.vercel.app",
+    origin:"  http://localhost:5173",
     credentials: true,
   })
 );
