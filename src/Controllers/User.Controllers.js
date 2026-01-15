@@ -2,13 +2,15 @@ import createTokensaveCookie from "../../jwt/genreatetoken.js";
 import User from "../models/User.models.js"
 import bcrypt, { hash }  from "bcryptjs";
 import { sendMail } from "../Utils/sendMail.js";
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import crypto from "crypto";
+import { count } from "console";
 
 const signup=async(req,res)=>{
     if (!req.file) {
     return res.status(400).json({ message: "No image file uploaded" });
   }
-
+let country=null
   const imageUrl = await req.file.path;
 
     const {firstname,email,password,confirmpassword,lastname,City,Postcode,Telephone,position}=req.body
@@ -16,6 +18,14 @@ const signup=async(req,res)=>{
     if (password!==confirmpassword) {
        return res.status(400).json({error:"password not match"})
         
+    }
+    if (Telephone) {
+const phoneNumber=parsePhoneNumberFromString(Telephone)
+if (phoneNumber) {
+  country=phoneNumber.country
+  
+}
+      
     }
     const users=await User.findOne({email})
     if (users) {
@@ -30,7 +40,7 @@ const signup=async(req,res)=>{
           password:hashpassword,
             lastname,
             position,
-            Telephone,
+            country,
             City,
           
             Postcode,

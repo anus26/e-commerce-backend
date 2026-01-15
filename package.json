@@ -12,6 +12,7 @@
     "get-client-ip": "^3.0.4",
     "ip-address": "^10.0.1",
     "jsonwebtoken": "^9.0.2",
+    "libphonenumber-js": "^1.12.34",
     "mongoose": "^8.18.0",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
