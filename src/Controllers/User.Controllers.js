@@ -52,6 +52,7 @@ if (phoneNumber) {
             lastname,
             position,
             Telephone,
+            country,
           imageUrl,
           }})
       }
