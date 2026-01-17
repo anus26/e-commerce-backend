@@ -4,7 +4,7 @@ import bcrypt, { hash }  from "bcryptjs";
 import { sendMail } from "../Utils/sendMail.js";
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import crypto from "crypto";
-import { count } from "console";
+
 
 const signup=async(req,res)=>{
     if (!req.file) {
@@ -40,7 +40,6 @@ if (phoneNumber) {
             lastname,
             position,
             country,
-        
     imageUrl,
     })
      await user.save()
@@ -53,9 +52,6 @@ if (phoneNumber) {
             lastname,
             position,
             Telephone,
-            City,
-         
-            Postcode,
           imageUrl,
           }})
       }
@@ -93,9 +89,7 @@ email:user.email,
 lastname:user.lastname,
    position:user.lastname,
             Telephone:user.Telephone,
-            City:user.City,
-            Country:user.Country,
-            Postcode:user.Postcode,
+            country:user.country,
           imageUrl:user.imageUrl,
 
 }})
