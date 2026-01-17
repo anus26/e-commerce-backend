@@ -14,19 +14,9 @@ const userSchema=new mongoose.Schema({
         type:String,
        required:true
     },
-       Telephone:{
-        type:Number,
-       required:true
-    },
+ Telephone: { type: String, required: true }, 
+  country: { type: String, required:true},  
   
-       City:{
-        type:String,
-       required:true
-    },
-       Postcode:{
-        type:Number,
-       required:true
-    },
 
     
     email:{
@@ -43,9 +33,9 @@ const userSchema=new mongoose.Schema({
     type:String
   },
 
-    name:String,
-    email:{type:String,required:true,unique:true},
-    password:String,
+   //  name:String,
+   //  email:{type:String,required:true,unique:true},
+   //  password:String,
     
     otp:String,
     otpExpire:Date,
