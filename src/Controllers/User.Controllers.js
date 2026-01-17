@@ -10,9 +10,9 @@ const signup=async(req,res)=>{
     if (!req.file) {
     return res.status(400).json({ message: "No image file uploaded" });
   }
-  const imageUrl = await req.file.path;
+  const imageUrl =  req.file.path;
 
-    const {firstname,email,password,confirmpassword,lastname,country,Telephone,position}=req.body
+    let {firstname,email,password,confirmpassword,lastname,country,Telephone,position}=req.body
    try {
     if (password!==confirmpassword) {
        return res.status(400).json({error:"password not match"})
