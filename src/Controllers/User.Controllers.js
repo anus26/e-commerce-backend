@@ -40,6 +40,7 @@ if (phoneNumber) {
             lastname,
             position,
             country,
+            Telephone,
     imageUrl,
     })
      await user.save()
